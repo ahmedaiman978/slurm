@@ -57,6 +57,15 @@ Order = 1
         HideLabel = true
         Config.Plugin = pico.widget.HtmlTemplateWidget
         Config.Template := "<table><tr><td><img src='https://github.com/CycleCloud/slurm/raw/master/logo.png' width='192' height='192'></td></tr><tr><td><p>Slurm is a highly configurable open source workload manager. See the <a href=\"https://www.schedmd.com/\" target=\"_blank\">Slurm project site</a> for an overview.</p></td></tr></table>"
+        
+
+
+    [[parameters About BeeGFS]]
+
+        [[[parameter BeeGFSsection]]]
+        HideLabel = true
+        Config.Plugin = pico.widget.HtmlTemplateWidget
+        Config.Template := "<table><tr><td><img src='https://www.beegfs.io/content/wp-content/uploads/pics/beegfs-logo/BeeGFS_Logo_137x87.png' width='137' height='87'></td></tr><tr><td><p>BeeGFS is a parallel cluster file system. See the <a href=\"http://www.beegfs.io/content/\" target=\"_blank\">BeeGFS project site</a>for an overview.</p></td></tr></table>"
 
         [[[parameter Readme]]]
         HideLabel = true
@@ -88,7 +97,23 @@ Order = 10
         Description = The VM type for execute nodes
         ParameterType = Cloud.MachineType
         DefaultValue = Standard_F2
+[parameters BeeGFS]
+Order = 15
 
+    [[parameters BeeGFS Settings]]
+   
+        Description = Various knobs for managing BeeGFS
+        Order = 10
+
+        [[[parameter StorageDiskSize]]]
+        Label = OSS Disk Size 
+        Description = Size (GB) of each 3 premium disk attached to each OSS. Disks are raided in RAID5 configuration.
+        DefaultValue = 1024
+
+        [[[parameter BeeGFSRoot ]]]
+        Label = BeeGFS Dir 
+        Description = The root directory for BeeGFS data
+        DefaultValue = /data/beegfs
 
     [[parameters Auto-Scaling]]
     Description = "The cluster can autoscale to the workload, adding execute hosts as jobs are queued. To enable this check the box below and choose the initial and maximum core counts for the cluster"
