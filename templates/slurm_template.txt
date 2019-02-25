@@ -22,11 +22,18 @@ Autoscale = $Autoscale
 
         [[[configuration]]]
         slurm.version = $SlurmVersion
+        # You can specify Chef attributes using dot notation if needed. For example, you
+        # can use it to change the default CycleServer admin password (defaults to cluster name):
+        beegfs.root_dir = $BeeGFSRoot
+
+        [[[cluster-init beegfs:default:1.0.0]]]        
 
     [[node master]]
     MachineType = $MasterMachineType
     IsReturnProxy = $ReturnProxy
     AdditionalClusterInitSpecs = $MasterClusterInitSpecs
+
+
     
         [[[cluster-init slurm:master:1.0.0]]]
 
@@ -35,6 +42,10 @@ Autoscale = $Autoscale
         PublicPort = 8652
 
 
+    [[node manager]]
+    MachineType = $ManagerVMType
+    IsReturnProxy = $ReturnProxy
+    
     [[nodearray execute]]
     MachineType = $ExecuteMachineType
     MaxCoreCount = $MaxExecuteCoreCount
@@ -46,7 +57,49 @@ Autoscale = $Autoscale
 
         [[[network-interface]]]
         AssociatePublicIpAddress = $ExecuteNodesPublic
+  [[nodearray storage]]
+    MachineType = $StorageVMType
+    
+    # The initial number of cores of this type to start when the cluster starts
+    InitialCount= $InitialStorageCount
 
+        [[[volume disk1]]]
+        Size = $StorageDiskSize
+        SSD = true
+        Mount = beegfs
+
+        [[[volume disk2]]]
+        Size = $StorageDiskSize
+        SSD = true
+        Mount = beegfs
+
+        [[[volume disk3]]]
+        Size = $StorageDiskSize
+        SSD = true
+        Mount = beegfs
+
+        [[[configuration cyclecloud.mounts.beegfs]]]
+        mountpoint = $BeeGFSRoot
+        fs_type = ext4
+        raid_level = 5
+
+        [[[cluster-init beegfs:storage:1.0.0]]]
+
+    [[nodearray metadata]]
+    MachineType = $MetadataVMType
+
+    # The initial number of cores of this type to start when the cluster starts
+    InitialCount= $InitialMetadataCount
+
+        [[[cluster-init beegfs:metadata:1.0.0]]]
+
+    [[nodearray client]]
+    MachineType = $ClientVMType
+
+    # The initial number of cores of this type to start when the cluster starts
+    InitialCount= $InitialClientCount
+
+        [[[cluster-init beegfs:client:1.0.0]]]
 
 [parameters About]
 Order = 1
